@@ -1,0 +1,33 @@
+package com.sist.seoul;
+import java.util.*;
+public class Container {
+	private String[] clsArr={
+			"com.sist.seoul.SeoulLocation",
+			"com.sist.seoul.SeoulNature",
+			"com.sist.seoul.SeoulShopping",
+			"com.sist.seoul.SeoulHetel",
+			"com.sist.seoul.SeoulGuestHouse" //클래스가 많아지면 여기에 추가해주면 됨(유지보수가 편해짐) 
+	};
+	private String[] key= {
+			"loc","nat","shop","gotel","guest"//클래스가 많아지면 여기에 추가해주면 됨(유지보수가 편해짐)
+	};
+	private Map clsMap=new HashMap();
+	// Map => key,value ==> interface
+	public Container() {
+		try {
+			for(int i=0;i<key.length;i++) {
+				Class clsName=Class.forName(clsArr[i]);
+				Object obj=clsName.getDeclaredConstructor().newInstance();
+				System.out.println(obj);
+				clsMap.put(key[i], obj);
+				
+			}
+		}catch (Exception e) {}
+	}
+	public Object getBean(String key) {
+		return clsMap.get(key);
+	}
+	public static void main(String[] args) {
+		Container c=new Container();
+	}
+}

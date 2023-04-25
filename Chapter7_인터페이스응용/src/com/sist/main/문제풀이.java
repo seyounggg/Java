@@ -1,0 +1,27 @@
+package com.sist.main;
+class A
+{
+	public A() {
+		System.out.println("A() Call...");
+	}
+	public A(int a) {
+		System.out.println("A(int a) Call...");
+	}
+}
+class B extends A
+{
+	public B() {
+		System.out.println("B() Call...");
+	}
+}
+public class 문제풀이 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+	B b=new B();	
+	A a=new A();
+	A aa=new B(); // 인터페이스, 추상클래스에서 많이 나옴...
+	B bb=(B)aa;
+	
+	}
+}
