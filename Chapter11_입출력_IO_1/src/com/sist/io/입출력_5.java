@@ -39,6 +39,7 @@ public class 입출력_5 {
 			}
 			in.close();
 			conn.disconnect();
+			//
 		}
 	}
 
