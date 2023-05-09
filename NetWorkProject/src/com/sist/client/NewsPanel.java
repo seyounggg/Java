@@ -1,4 +1,4 @@
-package com.sist.temp;
+package com.sist.client;
 
 import java.awt.*;
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class NewsPanel extends JPanel implements ActionListener{
 	   // 등록 
 	   tf.addActionListener(this);
 	   b.addActionListener(this);
-	   newsPrint("뮤직");
+	   newsPrint("영화");
    }
    public void newsPrint(String fd) {
 	   List<NewsVO> list=NaverNewsManager.newsSearchData(fd);

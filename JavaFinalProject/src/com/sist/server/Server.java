@@ -166,7 +166,7 @@ public class Server implements Runnable{
 					//요청값 받는다
 					String msg=in.readLine();
 					//100(기능번호)|id|name|sex
-					System.out.println("Client 전송값 : "+msg);
+					// System.out.println("Client 전송값 : "+msg);
 					StringTokenizer st =
 							new StringTokenizer(msg, "|");
 					int protocol=Integer.parseInt(st.nextToken());
@@ -184,7 +184,7 @@ public class Server implements Runnable{
 						waitVc.add(this);
 						
 						// 로그인창은 사라지고 main창을 보여주는 기능
-						messageTo(Function.MYLOG+"|"+name);
+						messageTo(Function.MYLOG+"|"+name+"|"+id);
 						
 						// 로그인하는 접속자에게 모든 정보를 전송
 						for(Client user : waitVc) {
@@ -199,6 +199,38 @@ public class Server implements Runnable{
 						messageAll(Function.CHAT+"|["+name+"]"+strMsg+"|"+color);
 					}
 					break;
+					case Function.INFO :
+					{
+						// 상대방의 ID를 받는다
+						String youId=st.nextToken();
+						for(Client user : waitVc) {
+							// 정보 볼 대상 찾아주는 과정
+							/*
+							 *   서버의 역할
+							 *   1. 저장 기능(클라이언트의 정보)
+							 *      => waitVc(Vector)
+							 *   2. 검색 기능 : id, name...
+							 *   3. 수정 기능 : id, name, pwd...
+							 *   4. 클라이언트 전송기능
+							 *   5. 요청에 대한 처리기능
+							 */
+							if(youId.equals(user.id)) {
+								// 전송기능
+								messageTo(Function.INFO+"|"+user.id+"|"+user.name+"|"+user.sex);
+								break;
+							}
+						}
+					}break;
+					case Function.MSGSEND :{
+					String youId=st.nextToken();
+					String strMsg=st.nextToken();
+					for(Client user:waitVc) {
+						if(youId.equals(user.id)) {
+							user.messageTo(Function.MSGSEND+"|"+id+"|"+strMsg);
+							break;
+						}
+					}
+					}break;
 					}
 				}catch(Exception ex) {}
 			}
