@@ -26,4 +26,6 @@ public class Function {
 	public static final int CHAT=200; // 채팅
 	public static final int MSGSEND=300; // 쪽지보내기
 	public static final int INFO=400; // 정보보기
+	public static final int MYEXIT=900; // 나가는 사람 처리
+	public static final int EXIT=990; // 남아있는 사람 처리
 }

@@ -15,7 +15,8 @@ public class DetailPanel extends JPanel implements ActionListener{
 	JLabel imgLa;
 	JLabel la1, la2, la3, la4, la5;
 	JButton b1, b2;
-	JLabel titleLa, regdateLa, gradeLa, ageLa, contentLa, keyLa;
+	JLabel titleLa, regdateLa, gradeLa, ageLa, keyLa;
+	JTextPane contentTa;
 	ControlPanel cp;
 	public DetailPanel(ControlPanel cp) {
 		this.cp=cp; // controlPanel에 이미 메모리 할당을 해두었으므로, controlPanel을 가져옴
@@ -33,7 +34,10 @@ public class DetailPanel extends JPanel implements ActionListener{
 		regdateLa=new JLabel("");
 		gradeLa=new JLabel("");
 		ageLa=new JLabel("");
-		contentLa=new JLabel("");
+		//contentLa=new JLabel(""); -> 이걸 JTextPanel로 변경
+		contentTa=new JTextPane();
+		contentTa.setEditable(false);
+		JScrollPane js=new JScrollPane(contentTa);
 		keyLa=new JLabel("");
 		
 		//배치
@@ -52,7 +56,8 @@ public class DetailPanel extends JPanel implements ActionListener{
 		ageLa.setBounds(165, 525, 300, 40);
 		
 		la5.setBounds(100, 575, 60, 40);
-		contentLa.setBounds(165, 575, 300, 40);
+		//contentLa.setBounds(165, 575, 300, 40);
+		js.setBounds(165, 575, 300, 40);
 		
 		keyLa.setBounds(100, 625, 300, 40);
 		keyLa.setVisible(false); // 안보이게 감춰둔거
@@ -69,7 +74,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 		add(la2); add(regdateLa);
 		add(la3); add(gradeLa);
 		add(la4); add(ageLa);
-		add(la5); add(contentLa);
+		add(la5); add(js);
 		add(p);
 		
 		b1.addActionListener(this);

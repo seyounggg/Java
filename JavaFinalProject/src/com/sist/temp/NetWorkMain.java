@@ -22,11 +22,65 @@ import java.net.*;
  *   1) 로그인, 채팅 문자열 입력 ... => 일반 사용자
  *   2) 서버에서 전송되는 데이터를 출력 (=> thread 역할)
  */
-public class NetWorkMain extends JFrame implements ActionListener,Runnable,MouseListener{
+/*   << 공부 과정 >>
+ *   웹에서 필요한 기술
+ *   => 데이터베이스(오라클 => MySQL)
+ *      ------------------------ MyBatis / JPA
+ *   => 데이터베이스 제어 => 자바
+ *      자바
+ *        - 클래스 개념 : 변수, 메소드, 생성자
+ *        - 인터페이스 : 요구사항 분석(기능)
+ *        - 예외처리
+ *        - 라이브러리
+ *        java.lang
+ *             Object / String / StringBuffer / Math / Wrapper
+ *        java.util
+ *             StringTokenizer / Date, Calendar
+ *             Collection => ArrayList, Hashmap, HashSet
+ *        java.net
+ *             URL / URLEncoder
+ *        java.io : 웹 => 업로드,다운로드(File)
+ *                  => Buffered~
+ *                     FileInputStream, FileOutputStream
+ *                     FileReader, FileWriter
+ *                     BufferedReader, File
+ *        java.text : SimpleDateFormat
+ *   -----------------------------------------------------------
+ *   2차 자바(web관련)
+ *      java.sql , javax.sql, javax.nameing
+ *      javax.servlet.*
+ *      
+ *      브라우저 ===== 자바 ===== 오라클
+ *                            ----- 데이터를 저장
+ *       윈도우 ===== 자바 ===== 파일
+ *                  --- 데이터 읽기 / 데이터전송
+ *   => 1) 오라클 제어
+ *        SELECT / UPDATE / DELETE / INSERT => DML
+ *        --------------------------------- 데이터 조작언어
+ *        CREATE / ALTER / DROP / TRUNCATE / RENAME => DDL
+ *        ----------------------------------------- 데이터 저장/생성
+ *        GRANT / REVOKE => DCL
+ *        -------------- Admin
+ *        COMMIT / ROLLBACK => TCL
+ *        ----------------- 일괄처리
+ *      2) 기타 : VIEW / SEQUENCE / PS-SQL(FUNCTION,PROCEDUR/TRIGGER)
+ *      3) 데이터베이스 모델링 (정규화, 제약조건)
+ *
+ *   => 브라우저에 데이터 출력 : HTML / CSS / JavaScript
+ *   => 자바스크립트 라이브러리 : JQuery / Ajax
+ *   ================================================[1차 프로젝트]===
+ *   Spring (Back-End) / VueJS(Front-End)
+ *   ------------------------------------[2차 프로젝트]---------------
+ *   Spring-Boot / My-SQL / ReactJS / JPA
+ *   ------------------------------------[3차 프로젝트]---------------
+ *   AWS => 호스팅
+ */
+public class NetWorkMain extends JFrame 
+				implements ActionListener,Runnable,MouseListener{
 	MenuPanel mp;
 	ControlPanel cp;
 	TopPanel tp;
-	JButton b1,b2,b3,b4,b5;
+	JButton b1,b2,b3,b4,b5,b6;
 	JLabel logo;
 	Login login=new Login();
 	// 페이지 지정
@@ -67,13 +121,15 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 		b2=new JButton("뮤직검색");
 		b3=new JButton("채팅");
 		b4=new JButton("뉴스검색");
-		b5=new JButton("뮤직추천");
-		mp.setLayout(new GridLayout(5,1,10,10));
+		b5=new JButton("커뮤니티"); //CURD
+		b6=new JButton("나가기");
+		mp.setLayout(new GridLayout(6,1,10,10));
 		mp.add(b1);
 		mp.add(b2);
 		mp.add(b3);
 		mp.add(b4);
 		mp.add(b5);
+		mp.add(b6);
 		
 		//추가
 		add(mp);
@@ -86,7 +142,7 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 		//setVisible(true);
 		
 		//종료
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setTitle("네트워크 뮤직 프로그램");
 		
 		//이벤트 등록
@@ -95,6 +151,7 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 		b3.addActionListener(this);
 		b4.addActionListener(this);
 		b5.addActionListener(this);
+		b6.addActionListener(this);
 		   //login
 		login.b1.addActionListener(this);
 		login.b2.addActionListener(this);
@@ -153,7 +210,7 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 			cp.card.show(cp, "news");
 		}
 		else if(e.getSource()==b5) {
-			cp.card.show(cp, "recomm");
+			cp.card.show(cp, "board");
 		}
 		else if(e.getSource()==login.b1) {
 			// 로그인 데이터 읽기
@@ -270,6 +327,11 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 			sm.setVisible(true);
 			sm.setVisible(false);
 		}
+		else if(e.getSource()==b6) { // 나가기
+			try {
+				out.write((Function.EXIT+"|"+myId+"\n").getBytes());
+			}catch(Exception ex) {}
+		}
 	}
 
 	// 서버에서 결과값을 받아서 출력 => Thread (자동화)
@@ -326,7 +388,23 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 					rm.ta.setText(strMsg);
 					rm.setVisible(true);
 				}break;
-
+				case Function.MYEXIT:
+				{
+					dispose(); //윈도우 메모리 해제
+					System.exit(0); //프로그램 종료
+				}break;
+				case Function.EXIT:
+				{
+					String mid=st.nextToken();
+					for(int i=0;i<cp.cp.model.getRowCount();i++) {
+						String uid=cp.cp.table.getValueAt(i, 0).toString();
+						// table 에 있는 모든 id 가져오기
+						if(mid.equals(uid)) {
+							cp.cp.model.removeRow(i);
+							break;
+						}
+					}
+				}break;
 				}
 			}
 		}catch(Exception ex) {}

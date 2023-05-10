@@ -37,7 +37,7 @@ public class HomePanel extends JPanel implements MouseListener{
 		setLayout(null);
 		pan.setLayout(new GridLayout(4,5,5,5));
 		
-		pan.setBounds(10, 15, 900, 700);
+		pan.setBounds(10, 15, 960, 700); // 딱 맞추고 싶으면 이걸 키우면 됨
 		add(pan);
 		JPanel p = new JPanel();
 		p.add(b1);
@@ -85,7 +85,7 @@ public class HomePanel extends JPanel implements MouseListener{
 					cp.dp.regdateLa.setText(vo.getRegDate());
 					cp.dp.gradeLa.setText(vo.getGrade());
 					cp.dp.ageLa.setText(vo.getAge());
-					cp.dp.contentLa.setText(vo.getContent());
+					cp.dp.contentTa.setText(vo.getContent());
 					cp.dp.keyLa.setText(vo.getKey());
 					cp.card.show(cp, "detail");
 				}catch(Exception ex) {

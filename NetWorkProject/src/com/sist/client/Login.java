@@ -36,7 +36,7 @@ public class Login extends JFrame{
 		
 		la3.setBounds(10, 85, 60, 30);
 		rb1.setBounds(80, 85, 70, 30);
-		rb2.setBounds(130, 85, 70, 30);
+		rb2.setBounds(155, 85, 70, 30);
 		
 		add(la1);	add(tf1);
 		add(la2);	add(tf2);

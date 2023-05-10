@@ -22,7 +22,7 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 	MenuPanel mp;
 	ControlPanel cp;
 	SidePanel sp;
-	JButton b1,b2,b3,b4; //홈, 영화검색, 영화 상세 정보, 영화 뉴스, 채팅
+	JButton b1,b2,b3,b4,b5,b6; //홈, 영화검색, 영화 상세 정보, 영화 뉴스, 채팅
 	JLabel logo;
 	Login login = new Login(); // 로그인 클래스 호출
 	MovieSystem ms = new MovieSystem();
@@ -39,7 +39,7 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 	public NetWorkMain() // 생성자 오버라이딩
 	{
 		logo =new JLabel();
-		Image img = ImageChange.getImage(new ImageIcon("/Users/seyeong/Desktop/Java/movie.png"), 200, 130);
+		Image img = ImageChange.getImage(new ImageIcon("/Users/seyeong/Desktop/Java/movie.png"), 240, 200);
 		logo.setIcon(new ImageIcon(img));
 		
 		// 클래스 호출
@@ -48,21 +48,25 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 		sp = new SidePanel();
 		
 		setLayout(null); // Layout없이 직접 배치
-		logo.setBounds(930, 15, 240, 200 );
+		logo.setBounds(930, 15, 240, 200);
 		mp.setBounds(10, 15, 900, 50);
 		cp.setBounds(10, 80, 900, 800);
-		sp.setBounds(930, 230, 240,650);
+		sp.setBounds(930, 230, 240, 650);
 		
 		b1 = new JButton("홈");
 		b2 = new JButton("영화 검색");
 		b3 = new JButton("뉴스");
 		b4 = new JButton("채팅");
+		b5 = new JButton("커뮤니티");
+		b6 = new JButton("나가기");
 		
-		mp.setLayout(new GridLayout(1, 5, 0, 10));
+		mp.setLayout(new GridLayout(1, 6, 10, 10));
 		mp.add(b1);
 		mp.add(b2);
 		mp.add(b3);
 		mp.add(b4);
+		mp.add(b5);
+		mp.add(b6);
 		
 		//추가
 		add(mp);
@@ -71,18 +75,20 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 		add(logo);
 		
 		//윈도우크기
-		setSize(1200,1000);
+		setSize(1200,900);
 //		setVisible(true); // 윈도우를 보여준다 => 로그인이 되면 보여준다.
 		
 		//종료
-		setDefaultCloseOperation(EXIT_ON_CLOSE); // x 클릭시 메모리 해제 => 종료
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setTitle("네트워크 뮤직 프로그램");
 		
-		// 홈, 검색, 영화 상세 보기, 영화 뉴스, 채팅
+		// 홈, 검색, 영화 상세 보기, 영화 뉴스, 채팅, 커뮤니티
 		b1.addActionListener(this);
 		b2.addActionListener(this);
 		b3.addActionListener(this);
 		b4.addActionListener(this);
+		b5.addActionListener(this);
+		b6.addActionListener(this);
 		// 로그인
 		login.b1.addActionListener(this);
 		login.b2.addActionListener(this);
@@ -151,6 +157,9 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 		{
 			cp.card.show(cp, "chat");
 		}
+		else if(e.getSource()==b5) {
+			cp.card.show(cp, "board");
+		}
 		else if(e.getSource()==login.b1) // 로그인 버튼을 누르면
 		{
 //			login.setVisible(false); // 로그인 창은 사라지고
@@ -183,6 +192,7 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 			try
 			{
 				s= new Socket("211.238.142.117",33333);
+				// 211.238.142.117
 				//읽는 위치 / 쓰는 위치
 				in= new BufferedReader(new InputStreamReader(s.getInputStream()));
 				// s는 서버 메모리 => 서버메모리로부터 값을 읽어 온다.
@@ -279,6 +289,11 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 			sm.setVisible(true);
 			rm.setVisible(false);
 		}
+		else if(e.getSource()==b6) { // 나가기
+			try {
+				out.write((Function.EXIT+"|"+myId+"\n").getBytes());
+			}catch(Exception ex) {}
+		}
 	}
 	
 	@Override
@@ -334,6 +349,23 @@ public class NetWorkMain extends JFrame implements ActionListener,Runnable,Mouse
 						rm.tf.setText(id);
 						rm.ta.setText(strMsg);
 						rm.setVisible(true);
+					}break;
+					case Function.MYEXIT:
+					{
+						dispose(); //윈도우 메모리 해제
+						System.exit(0); //프로그램 종료
+					}break;
+					case Function.EXIT:
+					{
+						String mid=st.nextToken();
+						for(int i=0;i<cp.cp.model.getRowCount();i++) {
+							String uid=cp.cp.table.getValueAt(i, 0).toString();
+							// table 에 있는 모든 id 가져오기
+							if(mid.equals(uid)) {
+								cp.cp.model.removeRow(i);
+								break;
+							}
+						}
 					}break;
 				}
 			}

@@ -166,7 +166,7 @@ public class Server implements Runnable{
 					//요청값 받는다
 					String msg=in.readLine();
 					//100(기능번호)|id|name|sex
-					// System.out.println("Client 전송값 : "+msg);
+					System.out.println("Client 전송값 : "+msg);
 					StringTokenizer st =
 							new StringTokenizer(msg, "|");
 					int protocol=Integer.parseInt(st.nextToken());
@@ -231,6 +231,24 @@ public class Server implements Runnable{
 						}
 					}
 					}break;
+					case Function.EXIT :
+					{
+						String mid=st.nextToken();
+						int i=0;
+						for(Client user:waitVc) {
+							if(user.id.equals(mid)) {
+								user.messageTo(Function.MYEXIT+"|");
+								waitVc.remove(i); // 명단에서 제거
+								in.close();
+								out.close();
+								// 서버 종료
+								break;
+							}
+							i++;
+						}
+						// 전체 메세지 날리기
+						messageAll(Function.EXIT+"|"+mid);
+					}
 					}
 				}catch(Exception ex) {}
 			}
