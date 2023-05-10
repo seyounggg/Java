@@ -21,7 +21,7 @@ import com.sist.common.ImageChange;
 import com.sist.manager.MovieVO;
 
 public class HomePanel extends JPanel implements MouseListener{
-	PosterCard[] pcs = new PosterCard[20];
+	PosterCard[] pcs = new PosterCard[12];
 	JPanel pan = new JPanel();
 	JButton b1,b2;
 	JLabel pageLa;
@@ -35,9 +35,9 @@ public class HomePanel extends JPanel implements MouseListener{
 		pageLa = new JLabel("0 page /0 page");
 		
 		setLayout(null);
-		pan.setLayout(new GridLayout(4,5,5,5));
+		pan.setLayout(new GridLayout(3,4,5,5));
 		
-		pan.setBounds(10, 15, 960, 700); // 딱 맞추고 싶으면 이걸 키우면 됨
+		pan.setBounds(10, 15, 900, 700); // 딱 맞추고 싶으면 이걸 키우면 됨
 		add(pan);
 		JPanel p = new JPanel();
 		p.add(b1);
@@ -79,7 +79,7 @@ public class HomePanel extends JPanel implements MouseListener{
 				MovieVO vo=ms.movieDetailData(title);
 				try {
 					URL url=new URL(vo.getPoster());
-					Image img=ImageChange.getImage(new ImageIcon(url), 530,	350 );
+					Image img=ImageChange.getImage(new ImageIcon(url), 630,	500 );
 					cp.dp.imgLa.setIcon(new ImageIcon(img));
 					cp.dp.titleLa.setText(vo.getTitle());
 					cp.dp.regdateLa.setText(vo.getRegDate());

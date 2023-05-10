@@ -31,7 +31,7 @@ public class MovieSystem {
 		List<MovieVO> gList=
 				new ArrayList<MovieVO>();
 		int j=0; //20개씩 나눠주는 변수
-		int rowSize=20;
+		int rowSize=12;
 		int start=(page-1)*rowSize;
 		/*
 		 *   1page => 0~19
@@ -46,7 +46,7 @@ public class MovieSystem {
 		return gList;
 	}
 	public int movieTotalPage() {
-		return (int)(Math.ceil(list.size()/20.0));
+		return (int)(Math.ceil(list.size()/12.0));
 	}
 	public List<MovieVO> movieCategoryData(int cno) {
 		List<MovieVO> mlist=

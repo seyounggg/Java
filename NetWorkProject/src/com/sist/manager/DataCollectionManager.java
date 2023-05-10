@@ -19,20 +19,19 @@ public class DataCollectionManager {
 		String key="";
 		try
 		{
-			String url="https://www.youtube.com/results?search_query="+URLEncoder.encode(title,"UTF-8");
-			//https://www.youtube.com/results?search_query=%EC%95%84%EC%9D%B4%EB%B8%8C
+			String url="https://search.naver.com/search.naver?where=video&sm=tab_jum&query="+URLEncoder.encode(title,"UTF-8");
 			Document doc = Jsoup.connect(url).get();
-			String data = doc.toString();
-			Pattern p = Pattern.compile("/watch\\?v=[^가-힣]+");
-			Matcher m = p.matcher(data);
-			while(m.find())
-			{
-				String s=m.group();
-				s=s.substring(s.indexOf("=")+1,s.indexOf("\""));
-				key=s;
-				break;
-			}
-			
+			Elements data = doc.select(".btn_save"); 
+			if (data.size() > 0) {
+				int i=0;
+				while(true) {
+					if (data.get(i).attr("data-url").toString().contains("tv.naver.com")) {
+						String video = data.get(i).attr("data-url").toString();
+						return video.substring(video.indexOf("v/")+2);
+					}
+					i++;
+				}
+	        }
 		}catch(Exception ex) {}
 		return key;
 	}
@@ -73,7 +72,7 @@ public class DataCollectionManager {
 				Elements grade = doc.select("span.txt_append span.txt_grade");
 				Elements reservation = doc.select("span.txt_append span.txt_num");
 				Elements regDate = doc.select("span.txt_info span.txt_num");
-				Elements content = doc.select("a.link_strory");
+				Elements content = doc.select("a.link_story");
 				Elements pk=doc.select("div.item_poster strong.tit_item a");
 				// index=16,뮤지컬 공연실황, 알쏭달쏭 캐치! 티니핑 <신비한 상자를 열어라!> 포스터가 없음.
 //				if (i==0) {

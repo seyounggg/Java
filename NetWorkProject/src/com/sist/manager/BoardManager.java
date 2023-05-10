@@ -60,6 +60,15 @@ public class BoardManager implements BoardInterface{
 			if(no==bvo.getNo())
 				vo=bvo;
 		}
+		try {
+			FileOutputStream fos=
+					new FileOutputStream("/Users/seyeong/Desktop/Java/java_datas/board_.txt");
+			ObjectOutputStream oos=
+					new ObjectOutputStream(fos);
+			oos.writeObject(list);
+			fos.close();
+			oos.close();
+		}catch(Exception ex) {}
 		return vo;
 	}
 	// 2. 글쓰기
@@ -92,14 +101,57 @@ public class BoardManager implements BoardInterface{
 	// 4, 실제 수정
 	@Override
 	public String boardUpdate(BoardVO vo) {
-		
-		return null;
+		String result="NO";
+		for(BoardVO bvo:list) {
+			if(bvo.getNo()==vo.getNo()) {
+				if(bvo.getPwd().equals(vo.getPwd())){
+					result="YES";
+					bvo.setName(vo.getName());
+					bvo.setSubject(vo.getSubject());
+	            	bvo.setContent(vo.getContent());
+	            	try {
+	            		FileOutputStream fos=
+	        					new FileOutputStream("/Users/seyeong/Desktop/Java/java_datas/board_.txt");
+	        			ObjectOutputStream oos=
+	        					new ObjectOutputStream(fos);
+	        			oos.writeObject(list);
+	        			fos.close();
+	        			oos.close();
+	            	}catch(Exception ex) {}
+	            	break;
+				}
+			}
+		}
+		return result;
 	}
 	// 5. 삭제
 	@Override
 	public String boardDelete(int no, String pwd) {
-		
-		return null;
+		String res="NO";
+		int i=0;
+		for(BoardVO bvo:list) {
+			if(bvo.getNo()==no)
+            {
+            	if(bvo.getPwd().equals(pwd))
+            	{
+            		res="YES";
+            		list.remove(i);
+            		try
+	        		{
+	        			FileOutputStream fos=
+	        					new FileOutputStream("c:\\java_datas\\board.txt");
+	        			ObjectOutputStream oos=
+	        					new ObjectOutputStream(fos);
+	        			oos.writeObject(list);
+	        			fos.close();
+	        			oos.close();
+	        		}catch(Exception ex){}
+            		break;
+            	}
+            }
+			i++;
+		}
+		return res;
 	}
 	// 6. 자동증가번호
 	// CREATE SQUENCE no_seq START WITH 1 INCREMENT BY 1

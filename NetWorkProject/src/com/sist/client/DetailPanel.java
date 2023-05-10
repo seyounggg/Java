@@ -27,7 +27,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 		la2=new JLabel("개봉일");
 		la3=new JLabel("평점");
 		la4=new JLabel("연령");
-		la5=new JLabel("주요정보");
+		la5=new JLabel("줄거리");
 		b1=new JButton("동영상");
 		b2=new JButton("목록"); // 목록으로 돌아가기
 		titleLa=new JLabel("");
@@ -42,30 +42,30 @@ public class DetailPanel extends JPanel implements ActionListener{
 		
 		//배치
 		setLayout(null);
-		imgLa.setBounds(100, 15, 530, 350); //cp.setbounds 비교
-		la1.setBounds(100, 375, 60, 40);
-		titleLa.setBounds(165, 375, 300, 40);
+		imgLa.setBounds(150, 15, 630, 500); //cp.setbounds 비교
+		la1.setBounds(100, 530, 60, 20);
+		titleLa.setBounds(165, 530, 300, 20);
 		
-		la2.setBounds(100, 425, 60, 40);
-		regdateLa.setBounds(165, 425, 300, 40);
+		la2.setBounds(100, 560, 60, 20);
+		regdateLa.setBounds(165, 560, 300, 20);
 		
-		la3.setBounds(100, 475, 60, 40);
-		gradeLa.setBounds(165, 475, 300, 40);
+		la3.setBounds(100, 590, 60, 20);
+		gradeLa.setBounds(165, 590, 300, 20);
 		
-		la4.setBounds(100, 525, 60, 40);
-		ageLa.setBounds(165, 525, 300, 40);
+		la4.setBounds(100, 620, 60, 20);
+		ageLa.setBounds(165, 620, 300, 20);
 		
-		la5.setBounds(100, 575, 60, 40);
+		la5.setBounds(100, 650, 60, 20);
 		//contentLa.setBounds(165, 575, 300, 40);
-		js.setBounds(165, 575, 300, 40);
+		js.setBounds(165, 650, 600, 70);
 		
-		keyLa.setBounds(100, 625, 300, 40);
+		keyLa.setBounds(100, 730, 300, 40);
 		keyLa.setVisible(false); // 안보이게 감춰둔거
 		
 		JPanel p=new JPanel();
 		p.add(b1);
 		p.add(b2);
-		p.setBounds(100, 670, 365, 40);
+		p.setBounds(100, 770, 365, 40);
 		
 		//윈도우에 추가
 		add(imgLa);
@@ -89,7 +89,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 				 * Runtime.getRuntime().exec("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome http://youtube.com/embed/" + keyLa.getText());
 
 				 */
-				String[] command = {"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "http://youtube.com/embed/" + keyLa.getText()};
+				String[] command = {"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "https://tv.naver.com/v/" + keyLa.getText()};
 				Runtime.getRuntime().exec(command);
 			}catch(Exception ex) {
 				ex.printStackTrace();
